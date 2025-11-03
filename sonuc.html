@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritmik Ehliyet Geri Bildiriminiz | HPE & NVIDIA & Forenzone</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f1419;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 0;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e293b 100%);
+            padding: 50px;
+            text-align: center;
+            color: white;
+            border-bottom: 3px solid #d4af37;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 12px;
+            letter-spacing: -0.3px;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .header .partners {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .content {
+            padding: 60px 50px;
+        }
+
+        .user-info {
+            background: #f8fafc;
+            padding: 30px;
+            border-left: 3px solid #1e3a8a;
+            margin-bottom: 50px;
+        }
+
+        .user-info h3 {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .user-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .user-info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .user-info-label {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .user-info-value {
+            font-size: 1rem;
+            color: #1e293b;
+            font-weight: 500;
+        }
+
+        .score-summary {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-left: 4px solid #1e3a8a;
+        }
+
+        .total-score {
+            font-size: 6rem;
+            font-weight: 300;
+            color: #1e3a8a;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .total-score-label {
+            font-size: 1rem;
+            color: #64748b;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .level-badge {
+            display: inline-block;
+            padding: 18px 50px;
+            border-radius: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .level-badge.cirak {
+            background: linear-gradient(135deg, #fcd34d 0%, #f59e0b 100%);
+            color: #1e293b;
+        }
+
+        .level-badge.usta {
+            background: linear-gradient(135deg, #c4b5fd 0%, #8b5cf6 100%);
+        }
+
+        .level-badge.lider {
+            background: linear-gradient(135deg, #d4af37 0%, #b8941f 100%);
+        }
+
+        .level-description {
+            font-size: 1.1rem;
+            color: #475569;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .chart-section {
+            background: #f8fafc;
+            padding: 50px;
+            border-left: 3px solid #1e3a8a;
+            margin-bottom: 50px;
+        }
+
+        .chart-section h2 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 32px;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .chart-container {
+            max-width: 550px;
+            margin: 0 auto;
+            position: relative;
+            height: 450px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #1e293b;
+            margin-bottom: 30px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            text-align: center;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .dimension-detailed {
+            background: #f8fafc;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-left: 4px solid #1e3a8a;
+            transition: all 0.3s ease;
+        }
+
+        .dimension-detailed:hover {
+            background: #f1f5f9;
+            border-left-color: #d4af37;
+        }
+
+        .dimension-detailed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .dimension-detailed-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1e293b;
+            letter-spacing: -0.3px;
+        }
+
+        .dimension-detailed-score {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        .dimension-detailed-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .dimension-detailed-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1e3a8a 0%, #d4af37 100%);
+            transition: width 0.5s ease;
+        }
+
+        .dimension-detailed-description {
+            font-size: 1rem;
+            color: #475569;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .dimension-feedback-section {
+            background: white;
+            padding: 24px;
+            margin-bottom: 20px;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .dimension-feedback-title {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dimension-feedback-text {
+            font-size: 1rem;
+            color: #1e293b;
+            line-height: 1.7;
+            font-weight: 500;
+        }
+
+        .dimension-tools {
+            background: #fffbeb;
+            padding: 24px;
+            border-left: 3px solid #f59e0b;
+        }
+
+        .dimension-tools-title {
+            font-size: 0.9rem;
+            color: #92400e;
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dimension-tools-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .dimension-tools-list li {
+            padding: 10px 0;
+            color: #475569;
+            line-height: 1.6;
+            padding-left: 24px;
+            position: relative;
+            border-bottom: 1px solid #fde68a;
+        }
+
+        .dimension-tools-list li:last-child {
+            border-bottom: none;
+        }
+
+        .dimension-tools-list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #f59e0b;
+            font-weight: 700;
+        }
+
+        .resonance-section {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            padding: 50px;
+            margin-bottom: 50px;
+            border-left: 4px solid #0284c7;
+        }
+
+        .resonance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+
+        .resonance-card {
+            background: white;
+            padding: 24px;
+            border-left: 3px solid #0284c7;
+        }
+
+        .resonance-card-label {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .resonance-card-value {
+            font-size: 1.8rem;
+            color: #1e293b;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .resonance-card-description {
+            font-size: 0.9rem;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .next-steps {
+            background: #f0fdf4;
+            padding: 40px;
+            border-left: 4px solid #22c55e;
+            margin-bottom: 50px;
+        }
+
+        .next-steps h2 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+
+        .next-steps ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .next-steps li {
+            padding: 14px 0;
+            padding-left: 32px;
+            position: relative;
+            color: #475569;
+            line-height: 1.7;
+            border-bottom: 1px solid #bbf7d0;
+        }
+
+        .next-steps li:last-child {
+            border-bottom: none;
+        }
+
+        .next-steps li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+            color: #22c55e;
+            font-weight: 700;
+        }
+
+        .actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            padding: 18px 40px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e293b 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .privacy-note {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .footer {
+            background: #1e293b;
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .footer p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 30px;
+            }
+
+            .content {
+                padding: 40px 30px;
+            }
+
+            .total-score {
+                font-size: 4rem;
+            }
+
+            .level-badge {
+                font-size: 1.1rem;
+                padding: 14px 36px;
+            }
+
+            .chart-container {
+                height: 350px;
+            }
+
+            .chart-section {
+                padding: 30px 24px;
+            }
+
+            .dimension-detailed {
+                padding: 24px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Karar Rezonansı & Algoritmik Ehliyet Geri Bildiriminiz</h1>
+            <p>Bireysel Değerlendirme Raporu</p>
+            <div class="partners">HPE & NVIDIA Partnerliği | Forenzone Stratejik Kürasyonu</div>
+        </div>
+
+        <div class="content">
+            <div class="user-info" id="userInfo"></div>
+
+            <div class="score-summary">
+                <div class="total-score" id="totalScore">0</div>
+                <div class="total-score-label">TOPLAM PUAN / 100</div>
+                <div class="level-badge" id="levelBadge">-</div>
+                <p class="level-description" id="levelDescription">-</p>
+            </div>
+
+            <div class="chart-section">
+                <h2>📊 Algoritmik Ehliyet Radar Haritanız</h2>
+                <div class="chart-container">
+                    <canvas id="radarChart"></canvas>
+                </div>
+            </div>
+
+            <h2 class="section-title">Radar Haritası Kategorileri & Detaylı Analiz</h2>
+
+            <div id="dimensionsDetailed"></div>
+
+            <div class="resonance-section">
+                <h2 class="section-title" style="border-bottom-color: #0284c7;">🔍 Karar Rezonansı Analiziniz</h2>
+                <p style="text-align: center; color: #475569; margin-bottom: 30px; font-size: 1rem;">
+                    Senaryolar üzerinden bireysel yanıtlarınızın yansıması
+                </p>
+                <div class="resonance-grid" id="resonanceGrid"></div>
+            </div>
+
+            <div class="next-steps">
+                <h2>Nasıl Devam Edebilirsiniz?</h2>
+                <ul>
+                    <li>Forenzone'un "Karar Ekosistem Haritalama Atölyesi"ne ön kayıt yaptırabilirsiniz</li>
+                    <li>HPE & NVIDIA ile kurumunuza özel YZ destekli karar destek sistemleri tasarlamak için birebir strateji seansı planlayabilirsiniz</li>
+                    <li>Düşük skorlu boyutlar için önerilen eğitim ve araçlardan yararlanabilirsiniz</li>
+                    <li>Algoritmik farkındalık konusunda düzenli değerlendirmeler yaparak gelişiminizi takip edebilirsiniz</li>
+                </ul>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" onclick="restartTest()">Yeni Değerlendirme</button>
+            </div>
+
+            <p class="privacy-note">
+                Detaylı rapor otomatik olarak e-posta adresinize gönderilecektir.<br>
+                İletişimde kalmak ve birlikte öğrenmeye devam etmek dileğiyle.
+            </p>
+        </div>
+
+        <div class="footer">
+            <p>Forenzone & HPE & NVIDIA Ekibi</p>
+            <p>Decision Intelligence / Stratejik Karar Zekası Programı</p>
+        </div>
+    </div>
+
+    <script>
+        // Sonuçları localStorage'dan al
+        const results = JSON.parse(localStorage.getItem('algoritmikEhliyetResults') || '{}');
+        const userData = JSON.parse(localStorage.getItem('algoritmikEhliyetUser') || '{}');
+
+        // Eğer sonuç yoksa test sayfasına yönlendir
+        if (!results.totalScore && results.totalScore !== 0) {
+            window.location.href = 'index.html';
+        }
+
+        // 5 Eksen tanımlamaları (Word belgesine göre)
+        const dimensionInfo = {
+            transparency: {
+                name: 'Şeffaflık & Açıklanabilirlik',
+                questions: 'Soru 1 ve Soru 2',
+                description: 'Bu eksen, modelin ne yaptığını anlama ve kararları açıklama yeteneğinizi gösterir.',
+                feedback: {
+                    high: {
+                        range: '15-20 Puan',
+                        text: 'Model şeffaflığına hâkimsiniz, kararlarınızı gerekçelendirebiliyorsunuz.'
+                    },
+                    medium: {
+                        range: '8-14 Puan',
+                        text: 'Temel farkındalığınız var, ancak modelin iç işleyişini daha iyi tanımanız faydalı olur.'
+                    },
+                    low: {
+                        range: '0-7 Puan',
+                        text: 'Model yapısını derinlemesine inceleme ihtiyacınız var, açıklanabilirlik zayıf.'
+                    }
+                },
+                tools: [
+                    'HPE & NVIDIA | PCAI – Veri kanalları yönetimi & Explainability araçları',
+                    'Forenzone | YZ Okuryazarlığı, Algoritmik Ehliyet Modülü & Karar Mimarisinde Açıklanabilirlik Eğitimi'
+                ]
+            },
+            fairness: {
+                name: 'Adalet & Kontrol',
+                questions: 'Soru 3 ve Soru 4',
+                description: 'Bu eksen, algoritmik önyargıları fark etme ve canlı karar süreçlerinde kontrol sahibi olma kapasitenizi ölçer.',
+                feedback: {
+                    high: {
+                        range: '15-20 Puan',
+                        text: 'Bias risklerini tanıyor ve sürece aktif müdahale edebiliyorsunuz.'
+                    },
+                    medium: {
+                        range: '8-14 Puan',
+                        text: 'Farkındalığınız var ama düzenli denetim ve kontrol mekanizmaları güçlendirilmeli.'
+                    },
+                    low: {
+                        range: '0-7 Puan',
+                        text: 'Sistemleri olduğu gibi kabul ediyor, denetim ve kontrolü göz ardı ediyorsunuz.'
+                    }
+                },
+                tools: [
+                    'HPE & NVIDIA | PCAI – Bias farkındalığı & Yönetişim araçları',
+                    'Forenzone | Algoritmik Tarafsızlık Atölyesi & Etik Denetim Simülasyonları'
+                ]
+            },
+            balance: {
+                name: 'İnsan–AI Dengesi',
+                questions: 'Soru 5 ve Soru 10',
+                description: 'Bu eksen, karar süreçlerinde insan sezgisi ile yapay zekâ çıktıları arasındaki dengeyi ve etik farkındalığı yansıtır.',
+                feedback: {
+                    high: {
+                        range: '15-20 Puan',
+                        text: 'Stratejik sezginizi YZ ile dengeliyor, etik çerçeveyi uyguluyorsunuz.'
+                    },
+                    medium: {
+                        range: '8-14 Puan',
+                        text: 'Dengeye dair niyet var, ancak karar ağırlığı YZ\'de yoğunlaşmış olabilir.'
+                    },
+                    low: {
+                        range: '0-7 Puan',
+                        text: 'Kendi katkınızı önemsizleştiriyor, etik etkileri yeterince sorgulamıyorsunuz.'
+                    }
+                },
+                tools: [
+                    'HPE & NVIDIA | Trusted AI çerçevesi',
+                    'Forenzone | Bilinçli Liderlik Programı & Stratejik Sezgi Aktivasyon Seansları',
+                    'Forenzone | Yapay Zeka Lider ve Yetenekleri için Kişisel Üstatlık Modülleri',
+                    'Forenzone | Decision Intelligence Programı ve Tematik Retreat\'ler'
+                ]
+            },
+            sustainability: {
+                name: 'Sürdürülebilirlik & Güncellenme',
+                questions: 'Soru 6 ve Soru 8',
+                description: 'Bu eksen, modellerin sürdürülebilirliği, enerji farkındalığı ve güncellenme kabiliyeti ile ilgilidir.',
+                feedback: {
+                    high: {
+                        range: '15-20 Puan',
+                        text: 'Model drift\'e karşı hazırlıklısınız, sürdürülebilirlik farkındalığınız güçlü.'
+                    },
+                    medium: {
+                        range: '8-14 Puan',
+                        text: 'Farkındalığınız var ama süreçleri daha düzenli hale getirmeniz gerek.'
+                    },
+                    low: {
+                        range: '0-7 Puan',
+                        text: 'Enerji maliyeti ve model eskimesi gibi kritik unsurlar radarınızda değil.'
+                    }
+                },
+                tools: [
+                    'HPE & NVIDIA | PCAI Monitoring Tools + GreenLake Sustainability Dashboard',
+                    'Forenzone | Sürdürülebilir AI/Teknoloji Stratejileri Eğitimi',
+                    'Forenzone | AI Yönetişimini Temellendirme Programı & Model Drift Farkındalığı Oyunlaştırması'
+                ]
+            },
+            data: {
+                name: 'Veri & Stratejik Etki',
+                questions: 'Soru 7 ve Soru 9',
+                description: 'Bu eksen, verinin entegrasyonu ve kararların iş modeline uzun vadeli etkisini değerlendirme becerinizi ölçer.',
+                feedback: {
+                    high: {
+                        range: '15-20 Puan',
+                        text: 'Veri altyapınızı etkin yönetiyor, stratejik etkileri analiz ediyorsunuz.'
+                    },
+                    medium: {
+                        range: '8-14 Puan',
+                        text: 'Veriye erişiminiz sınırlı, uzun vadeli etkiler için bütüncül bakış eksik olabilir.'
+                    },
+                    low: {
+                        range: '0-7 Puan',
+                        text: 'Veriler dağınık ve kararlar kısa vadeye odaklanmış.'
+                    }
+                },
+                tools: [
+                    'HPE & NVIDIA | Data Fabric + ROI Modelleme danışmanlık çözümleri',
+                    'Forenzone | Stratejik Veri Kullanımı Workshop\'u & Karar Ekosistem Haritalama Aracı'
+                ]
+            }
+        };
+
+        // Seviye bilgileri (Word belgesine göre)
+        const levelInfo = {
+            cirak: {
+                name: 'Algoritmik Çırak',
+                class: 'cirak',
+                range: '0-40 Puan',
+                description: 'YZ sistemleri hakkında temel farkındalık geliştirmeye başladınız. Algoritmalara kritik bakabilmek için daha fazla bilgi ve deneyime ihtiyacınız var.'
+            },
+            usta: {
+                name: 'Algoritmik Usta Adayı',
+                class: 'usta',
+                range: '41-70 Puan',
+                description: 'YZ sistemleri konusunda iyi bir farkındalığa sahipsiniz. Bazı alanlarda güçlüsünüz ancak geliştirmeniz gereken alanlar var.'
+            },
+            lider: {
+                name: 'Algoritmik Lider',
+                class: 'lider',
+                range: '71-100 Puan',
+                description: 'Tebrikler. YZ sistemleri konusunda yüksek farkındalığa sahipsiniz. Algoritmalara eleştirel bakabiliyor ve sorumlu YZ kullanımına liderlik edebilirsiniz.'
+            }
+        };
+
+        // Seviye belirleme
+        function determineLevel(score) {
+            if (score <= 40) return 'cirak';
+            if (score <= 70) return 'usta';
+            return 'lider';
+        }
+
+        // Geri bildirim seviyesi belirleme
+        function getFeedbackLevel(score) {
+            if (score >= 15) return 'high';
+            if (score >= 8) return 'medium';
+            return 'low';
+        }
+
+        // Kullanıcı bilgilerini göster
+        function displayUserInfo() {
+            const userInfoDiv = document.getElementById('userInfo');
+            const completionDate = new Date(results.completionTime);
+
+            userInfoDiv.innerHTML = `
+                <h3>Katılımcı Bilgileri</h3>
+                <div class="user-info-grid">
+                    <div class="user-info-item">
+                        <span class="user-info-label">Ad Soyad</span>
+                        <span class="user-info-value">${userData.firstName} ${userData.lastName}</span>
+                    </div>
+                    <div class="user-info-item">
+                        <span class="user-info-label">E-posta</span>
+                        <span class="user-info-value">${userData.email}</span>
+                    </div>
+                    <div class="user-info-item">
+                        <span class="user-info-label">Şirket</span>
+                        <span class="user-info-value">${userData.company}</span>
+                    </div>
+                    <div class="user-info-item">
+                        <span class="user-info-label">Test Tarihi</span>
+                        <span class="user-info-value">${completionDate.toLocaleDateString('tr-TR', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        })}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Skor özetini göster
+        function displayScoreSummary() {
+            const level = determineLevel(results.totalScore);
+            const levelData = levelInfo[level];
+
+            document.getElementById('totalScore').textContent = results.totalScore;
+            document.getElementById('levelBadge').textContent = levelData.name;
+            document.getElementById('levelBadge').className = `level-badge ${levelData.class}`;
+            document.getElementById('levelDescription').textContent = levelData.description;
+        }
+
+        // Radar grafiğini oluştur
+        function createRadarChart() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+
+            const labels = Object.keys(results.dimensionScores).map(key => dimensionInfo[key].name);
+            const data = Object.values(results.dimensionScores);
+
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Yetkinlik Skorunuz',
+                        data: data,
+                        fill: true,
+                        backgroundColor: 'rgba(30, 58, 138, 0.1)',
+                        borderColor: '#1e3a8a',
+                        pointBackgroundColor: '#1e3a8a',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#d4af37',
+                        pointHoverBorderColor: '#1e3a8a',
+                        pointRadius: 6,
+                        pointHoverRadius: 9,
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true,
+                                color: '#cbd5e1'
+                            },
+                            grid: {
+                                color: '#e2e8f0'
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 12,
+                                    weight: 600,
+                                    family: 'Inter'
+                                },
+                                color: '#1e293b'
+                            },
+                            ticks: {
+                                display: true,
+                                stepSize: 5,
+                                backdropColor: 'transparent',
+                                color: '#64748b',
+                                font: {
+                                    size: 10
+                                }
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 20
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // Boyut detaylarını göster
+        function displayDimensionsDetailed() {
+            const container = document.getElementById('dimensionsDetailed');
+            let html = '';
+
+            Object.entries(results.dimensionScores).forEach(([key, score]) => {
+                const info = dimensionInfo[key];
+                const maxScore = 20;
+                const percentage = (score / maxScore) * 100;
+                const feedbackLevel = getFeedbackLevel(score);
+                const feedback = info.feedback[feedbackLevel];
+
+                html += `
+                    <div class="dimension-detailed">
+                        <div class="dimension-detailed-header">
+                            <div>
+                                <div class="dimension-detailed-title">${info.name}</div>
+                                <div style="font-size: 0.85rem; color: #64748b; margin-top: 4px;">${info.questions}</div>
+                            </div>
+                            <div class="dimension-detailed-score">${score}/20</div>
+                        </div>
+
+                        <div class="dimension-detailed-bar">
+                            <div class="dimension-detailed-bar-fill" style="width: ${percentage}%"></div>
+                        </div>
+
+                        <p class="dimension-detailed-description">${info.description}</p>
+
+                        <div class="dimension-feedback-section">
+                            <div class="dimension-feedback-title">Puanınız: ${feedback.range}</div>
+                            <div class="dimension-feedback-text">${feedback.text}</div>
+                        </div>
+
+                        <div class="dimension-tools">
+                            <div class="dimension-tools-title">Algoritmik Ehliyetinizin Gelişimine Destek Araç Önerileri</div>
+                            <ul class="dimension-tools-list">
+                                ${info.tools.map(tool => `<li>${tool}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Karar Rezonansı bölümünü göster
+        function displayResonanceAnalysis() {
+            const container = document.getElementById('resonanceGrid');
+
+            // Mock/placeholder data - gerçek atölye verisi geldiğinde burası güncellenecek
+            const resonanceData = {
+                biasScore: {
+                    label: 'Bias Tanıma Skorunuz',
+                    value: '4/6',
+                    description: 'Çoğu önyargıyı tanıyorsunuz, bazı kör noktalar mevcut'
+                },
+                resonanceLayers: {
+                    label: 'Rezonans Katman Profili',
+                    value: 'Psikolojik & Stratejik',
+                    description: 'En çok odaklandığınız katmanlar'
+                },
+                strategicIntuition: {
+                    label: 'Stratejik Sezgi Göstergesi',
+                    value: '⚖️',
+                    description: 'Orta düzey stratejik farkındalık'
+                },
+                aiAwareness: {
+                    label: 'YZ Farkındalığı Etiketiniz',
+                    value: '🟨',
+                    description: 'YZ\'yi genel olarak ifade etmiş ama çözüm odaklı değil'
+                }
+            };
+
+            let html = '';
+            Object.entries(resonanceData).forEach(([key, data]) => {
+                html += `
+                    <div class="resonance-card">
+                        <div class="resonance-card-label">${data.label}</div>
+                        <div class="resonance-card-value">${data.value}</div>
+                        <div class="resonance-card-description">${data.description}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Testi yeniden başlat
+        function restartTest() {
+            if (confirm('Yeni bir değerlendirme başlatmak istediğinizden emin misiniz? Mevcut sonuçlarınız kaybolacaktır.')) {
+                localStorage.removeItem('algoritmikEhliyetResults');
+                localStorage.removeItem('algoritmikEhliyetUser');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Email gönderme fonksiyonu
+        async function sendResultEmail() {
+            try {
+                const response = await fetch('http://localhost:3000/api/send-results', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userData: userData,
+                        results: results
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    console.log('✅ Email başarıyla gönderildi!');
+                    console.log('Message ID:', data.messageId);
+
+                    // Kullanıcıya bildirim göster (opsiyonel)
+                    showEmailNotification(true);
+                } else {
+                    console.error('❌ Email gönderilemedi:', data.message);
+                    showEmailNotification(false, data.message);
+                }
+            } catch (error) {
+                console.error('❌ Email gönderme hatası:', error);
+                showEmailNotification(false, 'Sunucu bağlantı hatası');
+            }
+        }
+
+        // Email bildirim gösterme fonksiyonu
+        function showEmailNotification(success, errorMessage = '') {
+            // Bildirim container'ı oluştur
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                padding: 20px 30px;
+                background: ${success ? '#22c55e' : '#ef4444'};
+                color: white;
+                border-radius: 8px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                font-size: 0.95rem;
+                font-weight: 500;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+
+            if (success) {
+                notification.innerHTML = '✅ Sonuçlarınız e-posta adresinize gönderildi!';
+            } else {
+                notification.innerHTML = `⚠️ Email gönderilemedi${errorMessage ? ': ' + errorMessage : ''}`;
+            }
+
+            document.body.appendChild(notification);
+
+            // 5 saniye sonra bildirimi kaldır
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 5000);
+        }
+
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', function() {
+            displayUserInfo();
+            displayScoreSummary();
+            createRadarChart();
+            displayDimensionsDetailed();
+            displayResonanceAnalysis();
+
+            // Email gönderme - sayfa yüklendikten 2 saniye sonra
+            setTimeout(() => {
+                sendResultEmail();
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Değerlendirme | Algoritmik Ehliyet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f1419;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 0;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e293b 100%);
+            padding: 30px 50px;
+            color: white;
+            border-bottom: 3px solid #d4af37;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .header-left p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        .header-right {
+            text-align: right;
+        }
+
+        .timer {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .timer-label {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .content {
+            padding: 50px;
+            min-height: 500px;
+        }
+
+        .progress-section {
+            margin-bottom: 40px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1e3a8a 0%, #d4af37 100%);
+            transition: width 0.4s ease;
+        }
+
+        .question-card {
+            background: #f8fafc;
+            padding: 40px;
+            border-left: 4px solid #1e3a8a;
+            margin-bottom: 40px;
+        }
+
+        .question-number {
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .question-title {
+            font-size: 1.6rem;
+            color: #1e293b;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: -0.3px;
+            line-height: 1.3;
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            color: #475569;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .option {
+            background: white;
+            padding: 24px 28px;
+            border: 2px solid #cbd5e1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .option:hover {
+            border-color: #1e3a8a;
+            background: #f8fafc;
+        }
+
+        .option.selected {
+            border-color: #1e3a8a;
+            background: #f0f4ff;
+            border-width: 3px;
+        }
+
+        .option-radio {
+            min-width: 24px;
+            height: 24px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            position: relative;
+            margin-top: 2px;
+        }
+
+        .option.selected .option-radio {
+            border-color: #1e3a8a;
+            background: #1e3a8a;
+        }
+
+        .option.selected .option-radio::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .option-text {
+            flex: 1;
+            font-size: 1.05rem;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .option.selected .option-text {
+            color: #1e293b;
+            font-weight: 500;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #475569;
+            border: 2px solid #cbd5e1;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #f8fafc;
+            border-color: #94a3b8;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e293b 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .finish-section {
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .finish-section h2 {
+            font-size: 2rem;
+            color: #1e293b;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .finish-section p {
+            font-size: 1.1rem;
+            color: #64748b;
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        .answer-summary {
+            background: #f8fafc;
+            padding: 30px;
+            border-left: 3px solid #1e3a8a;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .answer-summary h3 {
+            font-size: 1.1rem;
+            color: #1e293b;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .answer-count {
+            font-size: 2.5rem;
+            color: #1e3a8a;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .warning p {
+            color: #92400e;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                padding: 30px;
+                gap: 20px;
+            }
+
+            .header-left, .header-right {
+                text-align: center;
+            }
+
+            .content {
+                padding: 30px 24px;
+            }
+
+            .question-card {
+                padding: 28px 24px;
+            }
+
+            .navigation {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>Algoritmik Ehliyet Değerlendirmesi</h1>
+                <p id="participantName"></p>
+            </div>
+            <div class="header-right">
+                <div class="timer" id="timer">15:00</div>
+                <div class="timer-label">Kalan Süre</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="progress-section">
+                <div class="progress-info">
+                    <span class="progress-text" id="progressText">Soru 1 / 10</span>
+                    <span class="progress-text" id="progressPercent">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" id="progressBarFill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div id="questionContainer"></div>
+
+            <div class="navigation">
+                <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" disabled>
+                    ← Önceki
+                </button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>
+                    Sonraki →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Kullanıcı bilgilerini al
+        const userData = JSON.parse(localStorage.getItem('algoritmikEhliyetUser') || '{}');
+
+        // Eğer kullanıcı verisi yoksa index'e yönlendir
+        if (!userData.firstName) {
+            window.location.href = 'index.html';
+        }
+
+        // Kullanıcı adını göster
+        document.getElementById('participantName').textContent = userData.firstName + ' ' + userData.lastName;
+
+        // Sorular
+        const questions = [
+            {
+                number: 1,
+                title: "YZ Modelini Ne Kadar Tanıyorsun?",
+                text: "Kullandığınız/değerlendirdiğiniz yapay zekâ sisteminin hangi verileri, nasıl işlediğini biliyor musunuz?",
+                options: [
+                    { text: "Tam olarak biliyorum ve raporlayabiliyorum", score: 10 },
+                    { text: "Kabaca biliyorum ama detaylar net değil", score: 5 },
+                    { text: "Hayır, sadece çıktılara güveniyorum", score: 0 }
+                ],
+                dimension: "transparency"
+            },
+            {
+                number: 2,
+                title: "Kararını Açıklayabilir misin?",
+                text: "Bir algoritmanın çıktısını yönetime sunarken, gerekçesini nasıl açıklarsın?",
+                options: [
+                    { text: "Veri temelli gerekçelendiriyorum", score: 10 },
+                    { text: "Ana noktaları söylüyorum ama yüzeysel kalıyor", score: 5 },
+                    { text: "Çıktıyı nihai karar gibi iletiyorum", score: 0 }
+                ],
+                dimension: "transparency"
+            },
+            {
+                number: 3,
+                title: "Tarafsızlığı Sorguluyor musun?",
+                text: "YZ sistemlerinin belirli grupları öne çıkarıp çıkarmadığını denetliyor musun?",
+                options: [
+                    { text: "Düzenli denetim yapıyorum", score: 10 },
+                    { text: "Bazen fark ediyorum ama ölçemiyorum", score: 5 },
+                    { text: "Hayır, böyle bir kontrolüm yok", score: 0 }
+                ],
+                dimension: "fairness"
+            },
+            {
+                number: 4,
+                title: "Canlı Karar Süreçlerine Müdahale Yetin Var mı?",
+                text: "Canlı çalışan bir algoritma hatalı çıktılar verdiğinde müdahale edebiliyor musun?",
+                options: [
+                    { text: "Süreci durdurabilir veya yeniden yönlendirebilirim", score: 10 },
+                    { text: "Uyarı sistemiyle sınırlı takip ediyorum", score: 5 },
+                    { text: "Hayır, müdahale şansım yok", score: 0 }
+                ],
+                dimension: "fairness"
+            },
+            {
+                number: 5,
+                title: "Modelin Çıktısına Ne Kadar Güveniyorsun?",
+                text: "Karar verdiğin modelin çıktısına ne derece güveniyorsun?",
+                options: [
+                    { text: "Modelin doğruluğunu bağımsız verilerle test ediyor ve güveniyorum", score: 10 },
+                    { text: "Çoğunlukla güveniyorum ama her zaman denetlemiyorum", score: 5 },
+                    { text: "Çıktılara ihtiyatla yaklaşıyorum, kontrol etmeye çalışıyorum", score: 0 }
+                ],
+                dimension: "balance"
+            },
+            {
+                number: 6,
+                title: "Güncellenme Kapasiten Ne Kadar?",
+                text: "YZ modelinin zamanla geçerliliğini yitirdiğini fark ettiğinde güncellemeleri takip ediyor musun?",
+                options: [
+                    { text: "Modelleri periyodik olarak güncelliyorum", score: 10 },
+                    { text: "Güncellemeleri takip ediyorum ama sürece dahil değilim", score: 5 },
+                    { text: "Eski modelle devam ediyorum", score: 0 }
+                ],
+                dimension: "sustainability"
+            },
+            {
+                number: 7,
+                title: "Farklı Kaynaklardan Veri Kullanabiliyor musun?",
+                text: "Farklı kaynaklardan gelen verileri tek bir YZ sisteminde entegre kullanabiliyor musun?",
+                options: [
+                    { text: "Verilerimi entegre edip tek kaynak gibi kullanabiliyorum", score: 10 },
+                    { text: "Farklı ortamlar arasında taşımak zorunda kalıyorum", score: 5 },
+                    { text: "Kullanamıyorum", score: 0 }
+                ],
+                dimension: "data"
+            },
+            {
+                number: 8,
+                title: "Enerji ve Kaynak Tüketiminin Farkında mısın?",
+                text: "Kullandığın modellerin enerji tüketimi veya karbon ayak izini dikkate alıyor musun?",
+                options: [
+                    { text: "Modelin enerji maliyetini ölçüyorum", score: 10 },
+                    { text: "Kabaca biliyorum ama detaylı değil", score: 5 },
+                    { text: "Hayır, hiç dikkate almıyorum", score: 0 }
+                ],
+                dimension: "sustainability"
+            },
+            {
+                number: 9,
+                title: "Kurumsal Etkiyi Değerlendirebiliyor musun?",
+                text: "YZ kararlarının kurumun iş modeli ve stratejisine etkilerini ölçüyor musun?",
+                options: [
+                    { text: "Etkisini analiz edip stratejiye bağlayabiliyorum", score: 10 },
+                    { text: "Bazı metriklere bakıyorum ama bütünsel değil", score: 5 },
+                    { text: "Hayır, sadece operasyonel sonuçlara odaklanıyorum", score: 0 }
+                ],
+                dimension: "data"
+            },
+            {
+                number: 10,
+                title: "Etik Sorumluluk Çerçeven Var mı?",
+                text: "YZ sistemlerinin topluma ve çalışanlara etkilerini etik bir çerçevede denetliyor musun?",
+                options: [
+                    { text: "Etik çerçeveyle çalışıyorum", score: 10 },
+                    { text: "Kendi değerlerime göre karar veriyorum", score: 5 },
+                    { text: "Etik çerçeve kullanmıyorum", score: 0 }
+                ],
+                dimension: "balance"
+            }
+        ];
+
+        // Durum değişkenleri
+        let currentQuestionIndex = 0;
+        let answers = new Array(questions.length).fill(undefined);
+        let timeRemaining = 15 * 60; // 15 dakika (saniye cinsinden)
+        let timerInterval;
+
+        // Timer başlat
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                document.getElementById('timer').textContent =
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        // Soruyu göster
+        function displayQuestion() {
+            const question = questions[currentQuestionIndex];
+            const container = document.getElementById('questionContainer');
+
+            let optionsHtml = '';
+            question.options.forEach((option, index) => {
+                const isSelected = answers[currentQuestionIndex] === index;
+                optionsHtml += `
+                    <div class="option ${isSelected ? 'selected' : ''}" onclick="selectOption(${index})">
+                        <div class="option-radio"></div>
+                        <div class="option-text">${option.text}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = `
+                <div class="question-card">
+                    <div class="question-number">Soru ${question.number} / ${questions.length}</div>
+                    <h2 class="question-title">${question.title}</h2>
+                    <p class="question-text">${question.text}</p>
+                    <div class="options">
+                        ${optionsHtml}
+                    </div>
+                </div>
+            `;
+
+            updateProgress();
+            updateButtons();
+        }
+
+        // Seçenek seç
+        function selectOption(optionIndex) {
+            answers[currentQuestionIndex] = optionIndex;
+            displayQuestion();
+        }
+
+        // İlerleme çubuğunu güncelle
+        function updateProgress() {
+            const answeredCount = answers.filter(a => a !== undefined).length;
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+
+            document.getElementById('progressText').textContent =
+                `Soru ${currentQuestionIndex + 1} / ${questions.length}`;
+            document.getElementById('progressPercent').textContent =
+                `${Math.round(progress)}%`;
+            document.getElementById('progressBarFill').style.width = `${progress}%`;
+        }
+
+        // Butonları güncelle
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            prevBtn.disabled = currentQuestionIndex === 0;
+
+            if (currentQuestionIndex === questions.length - 1) {
+                nextBtn.textContent = 'Testi Bitir';
+                nextBtn.disabled = answers[currentQuestionIndex] === undefined;
+            } else {
+                nextBtn.textContent = 'Sonraki →';
+                nextBtn.disabled = answers[currentQuestionIndex] === undefined;
+            }
+        }
+
+        // Önceki soru
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        }
+
+        // Sonraki soru
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            } else {
+                showFinishConfirmation();
+            }
+        }
+
+        // Bitirme onayı
+        function showFinishConfirmation() {
+            const unansweredCount = answers.filter(a => a === undefined).length;
+            const container = document.getElementById('questionContainer');
+
+            container.innerHTML = `
+                <div class="finish-section">
+                    <h2>Değerlendirme Tamamlanıyor...</h2>
+                    <p>Cevaplarınız değerlendiriliyor. Lütfen bekleyiniz.</p>
+
+                    <div class="answer-summary">
+                        <h3>Özet</h3>
+                        <div class="answer-count">${answers.filter(a => a !== undefined).length} / ${questions.length}</div>
+                        <p>Cevaplanan Soru</p>
+                    </div>
+                </div>
+            `;
+
+            // 2 saniye sonra otomatik olarak rapor sayfasına yönlendir
+            setTimeout(() => {
+                finishTest();
+            }, 2000);
+        }
+
+        // Testi bitir
+        function finishTest() {
+            clearInterval(timerInterval);
+
+            // Sonuçları hesapla
+            let totalScore = 0;
+            const dimensionScores = {
+                transparency: 0,
+                fairness: 0,
+                balance: 0,
+                sustainability: 0,
+                data: 0
+            };
+
+            questions.forEach((question, index) => {
+                if (answers[index] !== undefined) {
+                    const selectedOption = question.options[answers[index]];
+                    const score = selectedOption.score;
+                    totalScore += score;
+                    dimensionScores[question.dimension] += score;
+                }
+            });
+
+            // Sonuçları kaydet
+            const results = {
+                totalScore,
+                dimensionScores,
+                answers,
+                completionTime: new Date().toISOString(),
+                timeSpent: (15 * 60) - timeRemaining
+            };
+
+            localStorage.setItem('algoritmikEhliyetResults', JSON.stringify(results));
+
+            // Sonuç sayfasına yönlendir
+            window.location.href = 'sonuc.html';
+        }
+
+        // Sayfa yüklendiğinde
+        window.addEventListener('load', () => {
+            displayQuestion();
+            startTimer();
+        });
+
+        // Sayfa kapatılırken uyar
+        window.addEventListener('beforeunload', (e) => {
+            if (answers.some(a => a !== undefined)) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+    </script>
+</body>
+</html>
