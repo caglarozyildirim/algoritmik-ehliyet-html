@@ -544,7 +544,7 @@
             </div>
 
             <p class="privacy-note">
-                Detaylı rapor otomatik olarak e-posta adresinize gönderilecektir.<br>
+                Sonuçlarınızı bu sayfadan görüntüleyebilir ve ekran görüntüsü alabilirsiniz.<br>
                 İletişimde kalmak ve birlikte öğrenmeye devam etmek dileğiyle.
             </p>
         </div>
@@ -931,74 +931,6 @@
             }
         }
 
-        // Email gönderme fonksiyonu
-        async function sendResultEmail() {
-            try {
-                const response = await fetch('http://localhost:3000/api/send-results', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        userData: userData,
-                        results: results
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    console.log('✅ Email başarıyla gönderildi!');
-                    console.log('Message ID:', data.messageId);
-
-                    // Kullanıcıya bildirim göster (opsiyonel)
-                    showEmailNotification(true);
-                } else {
-                    console.error('❌ Email gönderilemedi:', data.message);
-                    showEmailNotification(false, data.message);
-                }
-            } catch (error) {
-                console.error('❌ Email gönderme hatası:', error);
-                showEmailNotification(false, 'Sunucu bağlantı hatası');
-            }
-        }
-
-        // Email bildirim gösterme fonksiyonu
-        function showEmailNotification(success, errorMessage = '') {
-            // Bildirim container'ı oluştur
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                bottom: 30px;
-                right: 30px;
-                padding: 20px 30px;
-                background: ${success ? '#22c55e' : '#ef4444'};
-                color: white;
-                border-radius: 8px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-                font-size: 0.95rem;
-                font-weight: 500;
-                z-index: 10000;
-                animation: slideIn 0.3s ease;
-            `;
-
-            if (success) {
-                notification.innerHTML = '✅ Sonuçlarınız e-posta adresinize gönderildi!';
-            } else {
-                notification.innerHTML = `⚠️ Email gönderilemedi${errorMessage ? ': ' + errorMessage : ''}`;
-            }
-
-            document.body.appendChild(notification);
-
-            // 5 saniye sonra bildirimi kaldır
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 5000);
-        }
-
         // Sayfa yüklendiğinde
         document.addEventListener('DOMContentLoaded', function() {
             displayUserInfo();
@@ -1006,11 +938,6 @@
             createRadarChart();
             displayDimensionsDetailed();
             displayResonanceAnalysis();
-
-            // Email gönderme - sayfa yüklendikten 2 saniye sonra
-            setTimeout(() => {
-                sendResultEmail();
-            }, 2000);
         });
     </script>
 </body>
