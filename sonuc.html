@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="email-generator.js"></script>
     <style>
         * {
             margin: 0;
@@ -540,6 +541,7 @@
             </div>
 
             <div class="actions">
+                <button class="btn btn-primary" onclick="generateAndOpenEmailTemplate()" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">Email Formatında Aç</button>
                 <button class="btn btn-primary" onclick="restartTest()">Yeni Değerlendirme</button>
             </div>
 
@@ -557,12 +559,33 @@
 
     <script>
         // Sonuçları localStorage'dan al
-        const results = JSON.parse(localStorage.getItem('algoritmikEhliyetResults') || '{}');
-        const userData = JSON.parse(localStorage.getItem('algoritmikEhliyetUser') || '{}');
+        let results = JSON.parse(localStorage.getItem('algoritmikEhliyetResults') || '{}');
+        let userData = JSON.parse(localStorage.getItem('algoritmikEhliyetUser') || '{}');
 
-        // Eğer sonuç yoksa test sayfasına yönlendir
+        console.log('📊 Results from localStorage:', results);
+        console.log('👤 User data from localStorage:', userData);
+
+        // Eğer sonuç yoksa mock data kullan (test için)
         if (!results.totalScore && results.totalScore !== 0) {
-            window.location.href = 'index.html';
+            console.warn('⚠️ No results in localStorage, using mock data for testing');
+            results = {
+                totalScore: 75,
+                dimensionScores: {
+                    transparency: 18,
+                    fairness: 15,
+                    balance: 16,
+                    sustainability: 14,
+                    data: 12
+                },
+                completionTime: new Date().toISOString()
+            };
+            userData = {
+                firstName: 'Test',
+                lastName: 'Kullanıcı',
+                email: 'test@example.com',
+                company: 'Test Şirketi',
+                phone: '0555 123 45 67'
+            };
         }
 
         // 5 Eksen tanımlamaları (Word belgesine göre)
